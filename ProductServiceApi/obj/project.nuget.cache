@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OzVzXdKLza/Q0RMm+PRQzHKHHVRNVhNcr+UFu+cD8Pw85nvxgrOW3WlmmXGxio/VsTCySeFihAV/Wc9cwa2RDg==",
+  "dgSpecHash": "RGmefij+RE/PePzBOQRR55zn2aXWRRBwOGtwS6NlOBRnN6aksQdNNMFPIkQVOGyNn1mdE8B1JSMYIkqkNVvCzw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\source\\repos\\ProductServiceApi\\ProductServiceApi\\ProductServiceApi.csproj",
+  "projectFilePath": "C:\\Users\\user\\Desktop\\ProductServiceApi\\ProductServiceApi\\ProductServiceApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

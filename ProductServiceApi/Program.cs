@@ -37,6 +37,7 @@ builder.Services.AddCors(options =>
 });
 //////////////////////////////////////
 
+builder.Services.AddMemoryCache();
 
 builder.Services.AddLogging(builder => { builder.AddConsole(); });
 

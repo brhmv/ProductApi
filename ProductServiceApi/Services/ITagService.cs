@@ -9,6 +9,6 @@ namespace ProductServiceApi.Services
 
         Task<Tag> CreateTag(string request);
 
-        Task<bool> DeleteCategory(Guid id);
+        Task<bool> DeleteTag(Guid id);
     }
 }

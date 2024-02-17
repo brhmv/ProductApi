@@ -4499,11 +4499,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\source\\repos\\ProductServiceApi\\ProductServiceApi\\ProductServiceApi.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Desktop\\ProductServiceApi\\ProductServiceApi\\ProductServiceApi.csproj",
       "projectName": "ProductServiceApi",
-      "projectPath": "C:\\Users\\user\\source\\repos\\ProductServiceApi\\ProductServiceApi\\ProductServiceApi.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\ProductServiceApi\\ProductServiceApi\\ProductServiceApi.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\source\\repos\\ProductServiceApi\\ProductServiceApi\\obj\\",
+      "outputPath": "C:\\Users\\user\\Desktop\\ProductServiceApi\\ProductServiceApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -4,14 +4,15 @@ using ProductServiceApi.Data;
 using ProductServiceApi.Models.ViewModels;
 using ProductServiceApi.Models.Entities;
 using AutoMapper;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Globalization;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ProductServiceApi.Services
 {
-    public class ProductService(AppDbContext appDbContext, IMapper mapper, ILogger<ProductService> logger) : IProductService
+    public class ProductService(AppDbContext appDbContext, IMapper mapper, ILogger<ProductService> logger, IMemoryCache cache) : IProductService
     {
         private readonly IMapper _mapper = mapper;
+
+        private readonly IMemoryCache _cache = cache;
 
         private readonly AppDbContext _context = appDbContext;
 
@@ -97,33 +98,38 @@ namespace ProductServiceApi.Services
         public async Task<List<ProductViewModel>> GetAllProducts(string? sortBy = null, string? filterBy = null)
         {
             try
-            {
-                IQueryable<Product> query = _context.Products
-                    .Include(p => p.Category)
-                    .Include(p => p.Tags);
-
-                if (!string.IsNullOrWhiteSpace(filterBy))
+            {             
+                if (!_cache.TryGetValue("AllProducts", out List<ProductViewModel>? productViewModels))
                 {
-                    query = query.Where(p => p.Category.Name.Contains(filterBy));
-                }
+                    IQueryable<Product> query = _context.Products
+                        .Include(p => p.Category)
+                        .Include(p => p.Tags);
 
-                if (!string.IsNullOrWhiteSpace(sortBy))
-                {
-                    switch (sortBy.ToLower())
+                    if (!string.IsNullOrWhiteSpace(filterBy))
                     {
-                        case "name":
-                            query = query.OrderBy(p => p.Name);
-                            break;
-                        case "price":
-                            query = query.OrderBy(p => p.Price);
-                            break;
+                        query = query.Where(p => p.Category.Name.Contains(filterBy));
                     }
+
+                    if (!string.IsNullOrWhiteSpace(sortBy))
+                    {
+                        switch (sortBy.ToLower())
+                        {
+                            case "name":
+                                query = query.OrderBy(p => p.Name);
+                                break;
+                            case "price":
+                                query = query.OrderBy(p => p.Price);
+                                break;
+                        }
+                    }
+
+                    var products = await query.ToListAsync();
+                    productViewModels = products.Select(p => _mapper.Map<ProductViewModel>(p)).ToList();
+
+                    _cache.Set("AllProducts", productViewModels, TimeSpan.FromMinutes(3));
                 }
 
-                var products = await query.ToListAsync();
-                var productViewModels = products.Select(p => _mapper.Map<ProductViewModel>(p)).ToList();
-
-                return productViewModels;
+                return productViewModels!;
             }
             catch (Exception ex)
             {
@@ -148,7 +154,5 @@ namespace ProductServiceApi.Services
             }
             catch (Exception) { return false; }
         }
-
-       
     }
 }

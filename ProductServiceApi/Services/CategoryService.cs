@@ -1,21 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using ProductServiceApi.Data;
 using ProductServiceApi.Models.Entities;
 
 namespace ProductServiceApi.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService(AppDbContext appDbContext, ILogger<CategoryService> logger, IMemoryCache cache) : ICategoryService
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _context = appDbContext;
 
-        private readonly ILogger<CategoryService> _logger;
+        private IMemoryCache _cache = cache;
 
-        public CategoryService(AppDbContext appDbContext, ILogger<CategoryService> logger)
-        {
-            _context = appDbContext;
-            _logger = logger;
-        }
+        private readonly ILogger<CategoryService> _logger = logger;
 
         public async Task<Category> CreateCategory(Category request)
         {
@@ -83,7 +80,12 @@ namespace ProductServiceApi.Services
         {
             try
             {
-                var categories = await _context.Categories.ToListAsync();
+                if (!_cache.TryGetValue("AllCategories", out List<Category>? categories))
+                {
+                    categories = await _context.Categories.ToListAsync();
+
+                    _cache.Set("AllCategories", categories, TimeSpan.FromMinutes(3));
+                }
 
                 return categories == null || categories.Count == 0 ? null! : categories;
             }
